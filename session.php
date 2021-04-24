@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once __DIR__ . '/vendor/autoload.php';
 if(!isset($_SESSION['level'])){
     header('location:login.php');
 }
@@ -22,6 +23,7 @@ if($_SESSION['level']!='admin'){
     $nama_level = $auth['nama_lev'];
     $nama_departemen = $auth['nama_dept'];
 }
+
 
 // if ($_SESSION['level'] == "Admin") {
 // 	include "conn.php";

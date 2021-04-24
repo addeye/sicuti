@@ -55,9 +55,9 @@
                 </ul>
               </li>
               <!-- Control Sidebar Toggle Button -->
-              <li>
+              <!-- <li>
                 <a href="#" data-toggle="control-sidebar"><i class="fa fa-spin fa-gear"></i></a>
-              </li>
+              </li> -->
             </ul>
           </div>
         </nav>

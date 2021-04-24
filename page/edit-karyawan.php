@@ -12,6 +12,8 @@ if(isset($_POST['update'])){
 
   $nik           = $_POST['nik'];
   $nama          = $_POST['nama'];
+  $telp          = $_POST['telp'];
+  $alamat          = $_POST['alamat'];
   $tanggal_masuk = $_POST['tanggal_masuk'];
   $departemen    = $_POST['departemen'];
   $jabatan       = $_POST['jabatan'];
@@ -40,7 +42,7 @@ if(isset($_POST['update'])){
     }
   }
 
-  $sql="UPDATE karyawan SET nama='$nama', tanggal_masuk='$tanggal_masuk', departemen='$departemen', jabatan='$jabatan', status='$status', jumlah_cuti='$jumlah_cuti',  username='$username',  password='$password',  level='$level', gambar='$gambar' WHERE nik='$kd'";
+  $sql="UPDATE karyawan SET nama='$nama', tanggal_masuk='$tanggal_masuk', departemen='$departemen', jabatan='$jabatan', status='$status', jumlah_cuti='$jumlah_cuti',  username='$username',  password='$password',  level='$level', gambar='$gambar', telp='$telp', alamat='$alamat' WHERE nik='$kd'";
   $res=mysqli_query($koneksi, $sql) or die (mysqli_error($koneksi));
   if($res){
     echo "<script>alert('Data berhasil dimasukan!'); window.location = 'index.php?page=edit-karyawan&id=".$row['nik']."'</script>";
@@ -110,6 +112,18 @@ $tampilLevel=mysqli_query($koneksi, $queryLevel) or die(mysqli_error($koneksi));
                     </div>
                   </div>
                   <div class="form-group">
+                      <label class="col-sm-2 col-sm-2 control-label">No Telp</label>
+                      <div class="col-sm-4">
+                        <input name="telp" type="number" id="telp" class="form-control" placeholder="Nomor Telp" value="<?=$row['telp']?>" autocomplete="off" required />
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="col-sm-2 col-sm-2 control-label">Alamat</label>
+                      <div class="col-sm-4">
+                        <textarea name="alamat" id="alamat" class="form-control" placeholder="Masukkan alamat..." required><?=$row['alamat']?></textarea>
+                      </div>
+                  </div>
+                  <div class="form-group">
                       <label class="col-sm-2 col-sm-2 control-label">Tanggal Masuk</label>
                       <div class="col-sm-4">
                       <input type='text' class="input-group date form-control" value="<?php echo $row['tanggal_masuk']; ?>" data-date="" data-date-format="yyyy-mm-dd" name='tanggal_masuk' id="tanggal_masuk" placeholder='Tanggal Masuk' required />
@@ -119,7 +133,7 @@ $tampilLevel=mysqli_query($koneksi, $queryLevel) or die(mysqli_error($koneksi));
                   <div class="form-group">
                       <label class="col-sm-2 col-sm-2 control-label">Departemen</label>
                       <div class="col-sm-4">
-                      <select name="departemen" id="departemen" class="form-control select2" required>
+                      <select name="departemen" id="departemen" class="form-control select2">
                       <option value=""> --- Pilih Departemen --- </option>
                         <?php while($data1=mysqli_fetch_array($tampilDep)) { ?>
                         <option value="<?php echo $data1['id_dept'];?>" <?=$row['departemen']==$data1['id_dept']?'selected':''?>><?php echo $data1['id_dept'];?> - <?php echo $data1['nama_dept'];?></option>

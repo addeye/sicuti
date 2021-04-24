@@ -2,8 +2,9 @@
 if(isset($_POST['simpan'])){
 $id_cuti     = $_POST['id_cuti'];
 $nama_cuti   = $_POST['nama_cuti'];
+$sub         = $_POST['sub'];
 
-$query = mysqli_query($koneksi, "INSERT INTO jenis_cuti (id_cuti, nama_cuti) VALUES ('$id_cuti', '$nama_cuti')");
+$query = mysqli_query($koneksi, "INSERT INTO jenis_cuti (id_cuti, nama_cuti, sub) VALUES ('$id_cuti', '$nama_cuti', '$sub')");
   if ($query){
   echo '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Data berhasil disimpan.</div>';
   }else{
@@ -40,7 +41,7 @@ $query = mysqli_query($koneksi, "INSERT INTO jenis_cuti (id_cuti, nama_cuti) VAL
 
         <div class="box-body">
           <div class="form-panel">
-              <form class="form-horizontal style-form" action="input-jenis.php" method="post" enctype="multipart/form-data" name="form1" id="form1">
+              <form class="form-horizontal style-form" method="post" enctype="multipart/form-data" name="form1" id="form1">
                   <div class="form-group">
                       <label class="col-sm-2 col-sm-2 control-label">Id Cuti</label>
                       <div class="col-sm-8">
@@ -50,16 +51,25 @@ $query = mysqli_query($koneksi, "INSERT INTO jenis_cuti (id_cuti, nama_cuti) VAL
                   <div class="form-group">
                       <label class="col-sm-2 col-sm-2 control-label">Jenis Cuti</label>
                       <div class="col-sm-8">
-                          <input name="nama_cuti" type="text" id="nama_cuti" class="form-control" placeholder="Jabatan" autocomplete="off" required />
+                          <input name="nama_cuti" type="text" id="nama_cuti" class="form-control" placeholder="Jenis cuti" autocomplete="off" required />
                           <!--<span class="help-block">A block of help text that breaks onto a new line and may extend beyond one line.</span>-->
                       </div>
                   </div>
-
+                  <div class="form-group">
+                      <label class="col-sm-2 col-sm-2 control-label">Sub</label>
+                      <div class="col-sm-8">
+                          <select name="sub" id="sub" class="form-control">
+                            <option value="0">Tidak</option>
+                            <option value="1">Iya</option>
+                          </select>
+                          <p class="help-block">Memiliki (N, N1, N2) </p>
+                      </div>
+                  </div>
                   <div class="form-group">
                       <label class="col-sm-2 col-sm-2 control-label"></label>
                       <div class="col-sm-10">
                           <input type="submit" name="simpan" value="Simpan" class="btn btn-sm btn-primary" />&nbsp;
-                        <a href="index.php?page=input-jenis" class="btn btn-sm btn-danger">Batal </a>
+                          <a href="index.php?page=jenis" class="btn btn-sm btn-danger">Batal </a>
                       </div>
                   </div>
               </form>

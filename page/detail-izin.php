@@ -1,18 +1,18 @@
 <?php
     $query = mysqli_query($koneksi, "SELECT izin.*, karyawan.nama as nama_karyawan, karyawan.gambar from izin left join karyawan on izin.nik=karyawan.nik WHERE izin.kode='$_GET[id]'");
-    $data  = mysqli_fetch_array($query);
+    $data = mysqli_fetch_array($query);
 
-    if(isset($_POST['update_status']) && $_POST['update_status']){
-        if($_SESSION['level']==1){
+    if (isset($_POST['update_status']) && $_POST['update_status']) {
+        if ($_SESSION['level'] == 1) {
             $sql = "UPDATE izin SET status='$_POST[status]' WHERE kode='$data[kode]'";
-            $q = mysqli_query($koneksi,$sql);
+            $q = mysqli_query($koneksi, $sql);
         }
-      if ($q){
-        echo "<script>alert('izin berhasil di update!'); window.location = 'index.php?page=izin'</script>";
-      //echo '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Data berhasil disimpan.</div>';
-      }else{
-        echo '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Data gagal disimpan, silahkan coba lagi.</div>';
-      }
+        if ($q) {
+            echo "<script>alert('izin berhasil di update!'); window.location = 'index.php?page=izin'</script>";
+        //echo '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Data berhasil disimpan.</div>';
+        } else {
+            echo '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Data gagal disimpan, silahkan coba lagi.</div>';
+        }
     }
 ?>
 <!-- Content Header (Page header) -->
@@ -56,12 +56,16 @@
               <td width="700" colspan="1"><?php echo $data['nama_karyawan']; ?></td>
               </tr>
               <tr>
-              <td>Tanggal Awal</td>
-              <td><?php echo $data['tanggal_awal']; ?></td>
+              <td>Tanggal</td>
+              <td><?php echo $data['tanggal']; ?></td>
               </tr>
               <tr>
-              <td>Tanggal Akhir</td>
-              <td><?php echo $data['tanggal_akhir']; ?></td>
+              <td>Jam Awal</td>
+              <td><?php echo $data['jam_awal']; ?></td>
+              </tr>
+              <tr>
+              <td>Jam Akhir</td>
+              <td><?php echo $data['jam_akhir']; ?></td>
               </tr>
               <tr>
               <td>Keterangan</td></td>
@@ -69,13 +73,13 @@
               </tr>
               <tr>
                 <td>Status</td></td>
-                <?php if($_SESSION['level']==1): ?>
+                <?php if ($_SESSION['level'] == 1): ?>
                   <td>
                   <form class="form-inline" action="" method="post">
                   <input type="hidden" name="update_status" value="true">
                     <select name="status" class="form-control">
-                    <?php foreach(status_cuti() as $val): ?>
-                        <option value="<?=$val?>" <?=$data['status']==$val?'selected':''?>><?=$val?></option>
+                    <?php foreach (status_cuti() as $val): ?>
+                        <option value="<?=$val?>" <?=$data['status'] == $val?'selected':''?>><?=$val?></option>
                       <?php endforeach; ?>
                     </select>
                     <button class="btn btn-default" type="submit">Update</button>
@@ -87,6 +91,7 @@
               </tr>
               </table>
               <div class="text-right">
+              <a href="/generate-pdf.php?file=pdf-izin&id=<?=$data['kode']?>" class="btn btn-sm btn-primary">Print PDF <i class="fa fa-print"></i></a>
               <a href="index.php?page=izin" class="btn btn-sm btn-warning">Kembali <i class="fa fa-arrow-circle-right"></i></a>
         </div>
           </div>

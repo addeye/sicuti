@@ -50,11 +50,12 @@ $tampil=mysqli_query($koneksi, $query1) or die(mysqli_error($koneksi));
           <i class="ion ion-clipboard"></i>
           <h3 class="box-title">Data Karyawan</h3>
           <div class="box-tools pull-right">
+            <a href="index.php?page=input-karyawan" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Tambah Karyawan</a>
           </div>
         </div><!-- /.box-header -->
 
         <div class="box-body">
-          <a href="karyawan_importxls.php" class="btn btn-sm btn-warning"><i class="fa fa-file"></i> Import Excel</a> <a href="karyawan_exportxls.php" class="btn btn-sm btn-success"><i class="fa fa-file"></i> Export Excel</a><br /><br />
+          <!-- <a href="karyawan_importxls.php" class="btn btn-sm btn-warning"><i class="fa fa-file"></i> Import Excel</a> <a href="karyawan_exportxls.php" class="btn btn-sm btn-success"><i class="fa fa-file"></i> Export Excel</a><br /><br /> -->
           <table id="lookup" class="table table-bordered table-hover">
             <thead bgcolor="eeeeee" align="center">
               <tr>
@@ -92,9 +93,6 @@ $tampil=mysqli_query($koneksi, $query1) or die(mysqli_error($koneksi));
             </tbody>
           </table>
         </div><!-- /.box-body -->
-        <div class="box-footer clearfix no-border">
-          <a href="index.php?page=input-karyawan" class="btn btn-sm btn-default pull-right"><i class="fa fa-plus"></i> Tambah Karyawan</a>
-        </div>
       </div><!-- /.box -->
     </section><!-- /.Left col -->
   </div><!-- /.row (main row) -->

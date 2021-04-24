@@ -13,42 +13,90 @@ $tanggal_akhir = $_POST['tanggal_akhir'];
 $jumlah        = $_POST['jumlah'];
 $jenis_cuti    = $_POST['jenis_cuti'];
 $ket           = $_POST['ket'];
+$tahun         = date('Y');
+$set_n         = 0;
+$set_n1         = 0;
+$set_n2         = 0;
 
-$sql = mysqli_query($koneksi, "SELECT * FROM karyawan WHERE nik='$nik'");
+$sql = mysqli_query($koneksi, "SELECT jatah_cuti.*, jenis_cuti.sub FROM jatah_cuti LEFT JOIN jenis_cuti ON jatah_cuti.jenis_cuti=jenis_cuti.id_cuti WHERE jatah_cuti.nik='$nik' AND jatah_cuti.jenis_cuti='$jenis_cuti'")or die(mysqli_error($koneksi));
 if(mysqli_num_rows($sql) == 0){
-  header("Location: index.php?page=cuti");
+  echo "<script>alert('jatah cuti belum di set!'); window.location = 'index.php?page=cuti'</script>";
 }else{
   $row = mysqli_fetch_assoc($sql);
 }
 
-$jumlah_cuti = $row['jumlah_cuti'];
-$nama = $row['nama'];
+$jumlah_n = $row['jumlah_n'];
+$jumlah_n1 = $row['jumlah_n1'];
+$jumlah_n2 = $row['jumlah_n2'];
 
-  if ($jumlah_cuti == 0) {
-    echo "<script>alert('cuti $nama sudah habis, tidak bisa membuat cuti!'); window.location = 'cuti.php'</script>";
-  } else if ($jumlah_cuti <= 0) {
-    echo "<script>alert('cuti $nama sudah habis, tidak bisa membuat cuti!'); window.location = 'cuti.php'</script>";
-  } else {
-    $query = mysqli_query($koneksi, "INSERT INTO cuti (kode, nik, tanggal_awal, tanggal_akhir, jumlah, jenis_cuti, ket) VALUES ('$kode', '$nik', '$tanggal_awal', '$tanggal_akhir', '$jumlah', '$jenis_cuti', '$ket')");
+$totalJatahCuti = $jumlah_n2 + $jumlah_n1 + $jumlah_n;
 
-    $qu	   = mysqli_query($koneksi, "UPDATE karyawan SET jumlah_cuti=(jumlah_cuti-'$jumlah') WHERE nik='$nik'");
+if($totalJatahCuti == 0){
+  echo "<script>alert('jatah cuti sudah habis, tidak bisa membuat cuti!'); window.location = 'index.php?page=input-cuti'</script>";
+}
 
-    if($_SESSION['level']==3){
-      mysqli_query($koneksi, "UPDATE cuti SET status_kepala='Approved' WHERE kode='$kode'");
-    }elseif($_SESSION['level']==2){
-      mysqli_query($koneksi, "UPDATE cuti SET status_sekertaris='Approved', status_kepala='Approved' WHERE kode='$kode'");
-    }
+if($totalJatahCuti < $jumlah){
+  echo "<script>alert('jatah cuti tidak cukup, tidak bisa membuat cuti!'); window.location = 'index.php?page=input-cuti'</script>";
+}
 
-    if ($query&&$qu){
-      echo "<script>alert('cuti $nama berhasil di buat!'); window.location = 'index.php?page=cuti'</script>";
-    //echo '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Data berhasil disimpan.</div>';
-    }else{
-      echo '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Data gagal disimpan, silahkan coba lagi.</div>';
-    }
+$jumlah_n = $row['jumlah_n'];
+$jumlah_n1 = $row['jumlah_n1'];
+$jumlah_n2 = $row['jumlah_n2'];
+$jumlah_minta_cuti = $jumlah;
+
+if($jumlah_n2 > 0 && $jumlah_minta_cuti > 0){
+  if($jumlah_minta_cuti <= $jumlah_n2){
+    $jumlah_n2 = $jumlah_n2 - $jumlah_minta_cuti;
+    $jumlah_minta_cuti = 0;
+  }else{
+    $jumlah_minta_cuti = $jumlah_minta_cuti - $jumlah_n2;
+    $jumlah_n2 = 0;
   }
+  $set_n2 = 1;
+}
+
+if($jumlah_n1 > 0 && $jumlah_minta_cuti > 0){
+  if($jumlah_minta_cuti <= $jumlah_n1){
+    $jumlah_n1 = $jumlah_n1 - $jumlah_minta_cuti;
+    $jumlah_minta_cuti = 0;
+  }else{
+    $jumlah_minta_cuti = $jumlah_minta_cuti - $jumlah_n1;
+    $jumlah_n1 = 0;
+  }
+  $set_n1 = 1;
+}
+
+if($jumlah_n > 0 && $jumlah_minta_cuti > 0){
+  if($jumlah_minta_cuti <= $jumlah_n){
+    $jumlah_n = $jumlah_n - $jumlah_minta_cuti;
+    $jumlah_minta_cuti = 0;
+  }else{
+    $jumlah_minta_cuti = $jumlah_minta_cuti - $jumlah_n;
+    $jumlah_n = 0;
+  }
+  $set_n = 1;
+}
+
+$query = mysqli_query($koneksi, "INSERT INTO cuti (kode, nik, tanggal_awal, tanggal_akhir, jumlah, jenis_cuti, ket, set_n, set_n1, set_n2, tahun) VALUES ('$kode', '$nik', '$tanggal_awal', '$tanggal_akhir', '$jumlah', '$jenis_cuti', '$ket', '$set_n', '$set_n1', '$set_n2','$tahun')")or die(mysqli_error($koneksi));
+
+$qu	   = mysqli_query($koneksi, "UPDATE jatah_cuti SET jumlah_n='$jumlah_n', jumlah_n1='$jumlah_n1', jumlah_n2='$jumlah_n2' WHERE id='$row[id]'")or die(mysqli_error($koneksi));
+
+if($_SESSION['level']==3){
+  mysqli_query($koneksi, "UPDATE cuti SET status_kepala='Approved' WHERE kode='$kode'")or die(mysqli_error($koneksi));
+}elseif($_SESSION['level']==2){
+  mysqli_query($koneksi, "UPDATE cuti SET status_sekertaris='Approved', status_kepala='Approved' WHERE kode='$kode'")or die(mysqli_error($koneksi));
+}
+
+if ($query&&$qu){
+  echo "<script>alert('cuti $nama berhasil di buat!'); window.location = 'index.php?page=cuti'</script>";
+//echo '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Data berhasil disimpan.</div>';
+}else{
+  echo '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Data gagal disimpan, silahkan coba lagi.</div>';
+}
+
 }
 $sqlKarayawan="select nik,nama from karyawan where level!=1";
-$hasilKaryawan=mysqli_query($koneksi,$sqlKarayawan);
+$hasilKaryawan=mysqli_query($koneksi,$sqlKarayawan)or die(mysqli_error($koneksi));
 
 $queryJenisCuti="select * from jenis_cuti order by id_cuti";
 $tampilJenisCuti=mysqli_query($koneksi, $queryJenisCuti) or die(mysqli_error($koneksi));
@@ -105,23 +153,24 @@ $tampilJenisCuti=mysqli_query($koneksi, $queryJenisCuti) or die(mysqli_error($ko
                   <div class="form-group">
                       <label class="col-sm-2 col-sm-2 control-label">Tanggal Awal Cuti</label>
                       <div class="col-sm-4">
-                      <input type='text' class="input-group date form-control" data-date="" data-date-format="yyyy-mm-dd" name='tanggal_awal' id="tanggal_awal" placeholder='Tanggal Awal Cuti' autocomplete='off' required='required'/>
-
+                      <input type='text' onchange="calculation()" class="input-group date form-control" data-date="" data-date-format="yyyy-mm-dd" name='tanggal_awal' id="tanggal_awal" placeholder='Tanggal Awal Cuti' autocomplete='off' required='required'/>
                     </div>
                   </div>
 
                   <div class="form-group">
                       <label class="col-sm-2 col-sm-2 control-label">Tanggal akhir Cuti</label>
                       <div class="col-sm-4">
-                      <input type='text' class="input-group date form-control" data-date="" data-date-format="yyyy-mm-dd" name='tanggal_akhir' id="tanggal_akhir" placeholder='Tanggal Akhir Cuti' autocomplete='off' required='required' />
+                      <input type='text' onchange="calculation()" class="input-group date form-control" data-date="" data-date-format="yyyy-mm-dd" name='tanggal_akhir' id="tanggal_akhir" placeholder='Tanggal Akhir Cuti' autocomplete='off' required='required' />
 
                     </div>
                   </div>
                   <div class="form-group">
                       <label class="col-sm-2 col-sm-2 control-label">Jumlah Cuti</label>
                       <div class="col-sm-2">
-                          <input name="jumlah" type="text" id="jumlah" class="form-control" placeholder="Jumlah" autocomplete="off" required />
-                          <!--<span class="help-block">A block of help text that breaks onto a new line and may extend beyond one line.</span>-->
+                        <div class="input-group">
+                          <input name="jumlah" readonly type="number" id="jumlah" class="form-control" placeholder="Jumlah" autocomplete="off" required />
+                          <span class="input-group-addon" id="basic-addon1">Hari</span>
+                        </div>
                       </div>
                   </div>
                   <div class="form-group">
@@ -136,7 +185,22 @@ $tampilJenisCuti=mysqli_query($koneksi, $queryJenisCuti) or die(mysqli_error($ko
                     </div>
                   </div>
                   <div class="form-group">
-                      <label class="col-sm-2 col-sm-2 control-label">Keterangan</label>
+                    <label for="" class="col-sm-2 col-sm-2 control-label">Kurangi Dari</label>
+                    <div class="col-sm-4">
+                      <label class="checkbox-inline">
+                        <input type="checkbox" id="inlineCheckbox1" name="set_n2" value="1"> N-2
+                      </label>
+                      <label class="checkbox-inline">
+                        <input type="checkbox" id="inlineCheckbox2" name="set_n1" value="1"> N-1
+                      </label>
+                      <label class="checkbox-inline">
+                        <input type="checkbox" id="inlineCheckbox3" name="set_n" value="1"> N
+                      </label>
+                      <p class="help-block">Pilih jika jenis cuti tahunan</p>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="col-sm-2 col-sm-2 control-label">Alasan Cuti</label>
                       <div class="col-sm-5">
                           <textarea name="ket" id="ket" class="form-control" placeholder="Keterangan" required></textarea>
                       </div>
@@ -169,7 +233,29 @@ $(".input-group.date").datepicker({ autoclose: true, todayHighlight: true });
 </script>
 
 <script>
-  $(function () {
-$(".select2").select2();
+$(function () {
+    $(".select2").select2();
 });
+function parseDate(str) {
+    var mdy = str.split('-');
+    return new Date(mdy[2], mdy[0]-1, mdy[1]);
+}
+
+function datediff(first, second) {
+    // Take the difference between the dates and divide by milliseconds per day.
+    // Round to nearest whole number to deal with DST.
+    return Math.round((second-first)/(1000*60*60*24));
+}
+
+function calculation(){
+  const date1 = new Date($('#tanggal_awal').val());
+  const date2 = new Date($('#tanggal_akhir').val());
+  const diffTime = Math.abs(date2 - date1);
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  // console.log(diffTime + " milliseconds");
+  // console.log(diffDays + " days");
+  $('#jumlah').val(diffDays+1);
+  // alert(diffDays);
+}
+
 </script>

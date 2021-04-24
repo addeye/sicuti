@@ -8,11 +8,12 @@ if(isset($_POST['simpan'])){
     $nik = $_POST['nik'];
     }
 
-    $tanggal_awal  = $_POST['tanggal_awal'];
-    $tanggal_akhir = $_POST['tanggal_akhir'];
+    $tanggal  = $_POST['tanggal'];
+    $jam_awal  = $_POST['jam_awal'];
+    $jam_akhir = $_POST['jam_akhir'];
     $ket           = $_POST['ket'];
 
-    $query = mysqli_query($koneksi, "INSERT INTO izin (kode, nik, tanggal_awal, tanggal_akhir, ket) VALUES ('$kode', '$nik', '$tanggal_awal', '$tanggal_akhir', '$ket')");
+    $query = mysqli_query($koneksi, "INSERT INTO izin (kode, nik, tanggal, jam_awal, jam_akhir, ket) VALUES ('$kode', '$nik', '$tanggal', '$jam_awal', '$jam_akhir', '$ket')");
 
     if ($query){
     echo "<script>alert('izin berhasil di buat!'); window.location = 'index.php?page=izin'</script>";
@@ -74,18 +75,23 @@ $hasilKaryawan=mysqli_query($koneksi,$sqlKarayawan);
                   <?php endif; ?>
 
                   <div class="form-group">
-                      <label class="col-sm-2 col-sm-2 control-label">Tanggal Awal Izin</label>
+                      <label class="col-sm-2 col-sm-2 control-label">Tanggal Izin</label>
                       <div class="col-sm-4">
-                      <input type='text' class="input-group date form-control" data-date="" data-date-format="yyyy-mm-dd" name='tanggal_awal' id="tanggal_awal" placeholder='Tanggal Awal Cuti' autocomplete='off' required='required'/>
+                      <input type='text' class="input-group date form-control" data-date="" data-date-format="yyyy-mm-dd" name='tanggal' id="tanggal" placeholder='Tanggal izin' autocomplete='off' required='required'/>
 
                     </div>
                   </div>
 
                   <div class="form-group">
-                      <label class="col-sm-2 col-sm-2 control-label">Tanggal Akhir Izin</label>
+                      <label class="col-sm-2 col-sm-2 control-label">Jam Awal</label>
                       <div class="col-sm-4">
-                      <input type='text' class="input-group date form-control" data-date="" data-date-format="yyyy-mm-dd" name='tanggal_akhir' id="tanggal_akhir" placeholder='Tanggal Akhir Cuti' autocomplete='off' required='required' />
-
+                      <input type="time" name="jam_awal" class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="col-sm-2 col-sm-2 control-label">Jam Akhir</label>
+                      <div class="col-sm-4">
+                      <input type="time" name="jam_akhir" class="form-control">
                     </div>
                   </div>
                   <div class="form-group">
@@ -122,7 +128,8 @@ $(".input-group.date").datepicker({ autoclose: true, todayHighlight: true });
 </script>
 
 <script>
+
   $(function () {
-$(".select2").select2();
-});
+    $(".select2").select2();
+  });
 </script>

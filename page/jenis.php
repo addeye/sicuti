@@ -49,34 +49,19 @@ $tampil=mysqli_query($koneksi, $query1) or die(mysqli_error($koneksi));
           <i class="ion ion-clipboard"></i>
           <h3 class="box-title">Data Variabel Cuti</h3>
           <div class="box-tools pull-right">
-          <form action='departemen.php' method="POST">
-            <div class="input-group" style="width: 230px;">
-              <input type="text" name="qcari" class="form-control input-sm pull-right" placeholder="Cari Jabatan">
-              <div class="input-group-btn">
-                <button type="submit" class="btn btn-sm btn-default tooltips" data-placement="bottom" data-toggle="tooltip" title="Cari Data"><i class="fa fa-search"></i></button>
-                <a href="departemen.php" class="btn btn-sm btn-success tooltips" data-placement="bottom" data-toggle="tooltip" title="Refresh"><i class="fa fa-refresh"></i></a>
-              </div>
-            </div>
-            </form>
+          <a href="index.php?page=input-jenis" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Tambah Variabel</a>
           </div>
         </div><!-- /.box-header -->
 
         <div class="box-body">
-        <!-- <form action='admin.php' method="POST">
-
-  <input type='text' class="form-control" style="margin-bottom: 4px;" name='qcari' placeholder='Cari berdasarkan User ID dan Username' required />
-    <input type='submit' value='Cari Data' class="btn btn-sm btn-primary" /> <a href='admin.php' class="btn btn-sm btn-success" >Refresh</i></a>
-    </div>
-    </form>-->
-
-
-
           <table id="example" class="table table-responsive table-hover table-bordered">
           <thead>
               <tr>
                 <th><center>No </center></th>
                 <th><center>Id Cuti </center></th>
                 <th><center>Variabel Cuti </center></th>
+                <th><center>SUB </center></th>
+                <th></th>
               </tr>
           </thead>
               <?php
@@ -88,6 +73,7 @@ $tampil=mysqli_query($koneksi, $query1) or die(mysqli_error($koneksi));
             <td><center><?php echo $no; ?></center></td>
             <td><center><?php echo $data['id_cuti'];?></center></td>
             <td><center><?php echo $data['nama_cuti'];?></center></td>
+            <td><center><?php echo $data['sub']==0?'Tidak':'Iya';?></center></td>
             <td><center><div id="thanks"><a class="btn btn-sm btn-primary" data-placement="bottom" data-toggle="tooltip" title="Edit Jabatan" href="index.php?page=edit-jenis&aksi=edit&kd=<?php echo $data['id_cuti'];?>"><span class="glyphicon glyphicon-edit"></span></a>
                 <a onclick="return confirm ('Yakin hapus <?php echo $data['nama_cuti'];?>.?');" class="btn btn-sm btn-danger tooltips" data-placement="bottom" data-toggle="tooltip" title="Hapus Jabatan" href="index.php?page=jenis&aksi=hapus&kd=<?php echo $data['id_cuti'];?>"><span class="glyphicon glyphicon-trash"></a></center></td></tr></div>
           <?php
@@ -96,9 +82,6 @@ $tampil=mysqli_query($koneksi, $query1) or die(mysqli_error($koneksi));
             </tbody>
             </table>
         </div><!-- /.box-body -->
-        <div class="box-footer clearfix no-border">
-          <a href="index.php?page=input-jenis" class="btn btn-sm btn-default pull-right"><i class="fa fa-plus"></i> Tambah Variabel</a>
-          </div>
       </div><!-- /.box -->
 
     </section><!-- /.Left col -->

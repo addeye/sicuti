@@ -6,6 +6,8 @@ if(isset($_POST['input'])){
     $jenis_gambar=$_FILES['nama_file']['type'];
     $nik           = $_POST['nik'];
     $nama          = $_POST['nama'];
+    $telp          = $_POST['telp'];
+    $alamat          = $_POST['alamat'];
     $tanggal_masuk = $_POST['tanggal_masuk'];
     $departemen    = $_POST['departemen'];
     $jabatan       = $_POST['jabatan'];
@@ -19,8 +21,8 @@ if(isset($_POST['input'])){
     if($jenis_gambar=="image/jpeg" || $jenis_gambar=="image/jpg" || $jenis_gambar=="image/gif" || $jenis_gambar=="image/png"){
       $gambar = $namafolder . basename($_FILES['nama_file']['name']);
       if (move_uploaded_file($_FILES['nama_file']['tmp_name'], $gambar)) {
-        $sql="INSERT INTO karyawan (nik,nama,tanggal_masuk,departemen,jabatan,status,jumlah_cuti,username,password,level,gambar) VALUES
-              ('$nik','$nama','$tanggal_masuk','$departemen','$jabatan','$status','$jumlah_cuti','$username','$password','$level','$gambar')";
+        $sql="INSERT INTO karyawan (nik,nama,telp,alamat,tanggal_masuk,departemen,jabatan,status,jumlah_cuti,username,password,level,gambar) VALUES
+              ('$nik','$nama','$telp','$alamat','$tanggal_masuk','$departemen','$jabatan','$status','$jumlah_cuti','$username','$password','$level','$gambar')";
         $res=mysqli_query($koneksi, $sql) or die (mysqli_error($koneksi));
         //echo "Gambar berhasil dikirim ke direktori".$gambar;
               echo "<script>alert('Data berhasil dimasukan!'); window.location = 'index.php?page=karyawan'</script>";
@@ -83,9 +85,20 @@ $tampilLevel=mysqli_query($koneksi, $queryLevel) or die(mysqli_error($koneksi));
                   <div class="form-group">
                       <label class="col-sm-2 col-sm-2 control-label">Nama Pegawai</label>
                       <div class="col-sm-4">
-                    <input name="nama" type="text" id="nama" class="form-control" placeholder="Nama Pegawai" autocomplete="off" required />
-
-                    </div>
+                        <input name="nama" type="text" id="nama" class="form-control" placeholder="Nama Pegawai" autocomplete="off" required />
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="col-sm-2 col-sm-2 control-label">No Telp</label>
+                      <div class="col-sm-4">
+                        <input name="telp" type="number" id="telp" class="form-control" placeholder="Nomor Telp" autocomplete="off" required />
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="col-sm-2 col-sm-2 control-label">Alamat</label>
+                      <div class="col-sm-4">
+                        <textarea name="alamat" id="alamat" class="form-control" placeholder="Masukkan alamat..." required></textarea>
+                      </div>
                   </div>
                   <div class="form-group">
                       <label class="col-sm-2 col-sm-2 control-label">Tanggal Masuk</label>
@@ -97,7 +110,7 @@ $tampilLevel=mysqli_query($koneksi, $queryLevel) or die(mysqli_error($koneksi));
                   <div class="form-group">
                     <label class="col-sm-2 col-sm-2 control-label">Departemen</label>
                     <div class="col-sm-4">
-                      <select name="departemen" id="departemen" class="form-control select2" required>
+                      <select name="departemen" id="departemen" class="form-control select2">
                         <option value=""> --- Pilih Departemen --- </option>
                         <?php while($data1=mysqli_fetch_array($tampilDep)) { ?>
                         <option value="<?php echo $data1['id_dept'];?>"><?php echo $data1['id_dept'];?> - <?php echo $data1['nama_dept'];?></option>

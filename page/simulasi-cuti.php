@@ -38,9 +38,9 @@
                   <i class="ion ion-clipboard"></i>
                   <h3 class="box-title">Data Karyawan</h3>
                   <div class="box-tools pull-right">
-                  </div> 
+                  </div>
                 </div><!-- /.box-header -->
-                
+
                 <div class="box-body">
                 <?php
              if(isset($_GET['aksi']) == 'update'){
@@ -63,15 +63,15 @@
 <?php
 					$date = date('Y-m-d');
                     //$date1= date_add($date, date_interval_create_from_date_string('10 days'));
-					
+
 					$query1="SELECT *,DATEDIFF(DATE_ADD(tanggal_masuk, INTERVAL 0 DAY), CURDATE()) as selisih, DATEDIFF(DATE_ADD(tanggal_masuk, INTERVAL 0 DAY), CURDATE()) as selisih1 FROM karyawan ";
-                    
+
                    /** if(isset($_POST['qcari'])){
 	               $qcari=$_POST['qcari'];
 	               $query1="SELECT *,DATE_ADD(k1_finish, INTERVAL -30 DAY) as kontrak_habis, DATEDIFF(DATE_ADD(k1_finish, INTERVAL -30 DAY), CURDATE()) as selisih FROM karyawan WHERE nama like '%$qcari%' AND status like '%$kontrak%'";
-                    
+
                     } **/
-                    $tampil=mysqli_query($koneksi, $query1) or die(mysqli_error());
+                    $tampil=mysqli_query($koneksi, $query1) or die(mysqli_error($koneksi));
                     ?>
                   <table id="example" class="table table-hover table-bordered">
                   <thead>
@@ -83,13 +83,13 @@
                         <th><center>Masa Kerja</center></th>
                         <th><center>Total</center></th>
                         <th><center>Tools</center></th>
-						
+
                       </tr>
                   </thead>
-                     <?php 
+                     <?php
                      //$no=0;
                      while($data=mysqli_fetch_array($tampil))
-                    { //$no++; 
+                    { //$no++;
                     $a = ($data['selisih'] * -2)/2;
                     $c = $a/30 ;
                     $b = $data['status'];
@@ -109,7 +109,7 @@
                             else if ($data['status'] == 'PKWTT' ){
 								echo '<span class="label label-info">PKWTT</span>';
 							}
-                    
+
                     ?></center></td>
                     <td><center><?php echo $a; ?> Hari<center/></td>
                     <td><center><?php
@@ -185,11 +185,11 @@
                               echo "0";
                             }
                           }
-                           
+
                     ?> Hari</center></td>
                     <td><a href="simulasi-cuti.php?aksi=update&&cuti=<?php echo $valcuti; ?>&&nik=<?php echo $data['nik']; ?>" class="btn btn-sm btn-primary">Input Cuti</a></td>
-                    </tr> <?php   
-              } 
+                    </tr> <?php
+              }
               ?>
                    </tbody>
                    </table>
@@ -226,6 +226,6 @@
     <script src="../dist/js/app.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="../dist/js/demo.js"></script>
-	  
+
   </body>
 </html>

@@ -9,8 +9,9 @@ if(mysqli_num_rows($sql) == 0){
 if(isset($_POST['update'])){
   $kd  = $_POST['id_cuti'];
   $jabatan     = $_POST['nama_cuti'];
+  $sub     = $_POST['sub'];
 
-  $update = mysqli_query($koneksi, "UPDATE jenis_cuti SET nama_cuti='$nama_cuti' WHERE id_cuti='$kd'") or die(mysqli_error($koneksi));
+  $update = mysqli_query($koneksi, "UPDATE jenis_cuti SET nama_cuti='$nama_cuti', sub='$sub' WHERE id_cuti='$kd'") or die(mysqli_error($koneksi));
   if($update){
     echo '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Data berhasil disimpan.</div>';
   }else{
@@ -62,28 +63,39 @@ if(isset($_POST['update'])){
         <div class="box-body">
         <form class="form-horizontal style-form" action="" method="post" enctype="multipart/form-data" name="form1" id="form1">
         <div class="form-group">
-                      <label class="col-sm-2 col-sm-2 control-label">Id Cuti</label>
-                      <div class="col-sm-8">
-                          <input name="id_cuti" type="text" id="id_cuti" class="form-control" placeholder="Tidak perlu di isi" value="<?php echo $row['id_cuti']; ?>" autofocus="on" readonly="readonly" />
-                      </div>
-                  </div>
-                  <div class="form-group">
-                      <label class="col-sm-2 col-sm-2 control-label">Variabel Cuti</label>
-                      <div class="col-sm-8">
-                          <input name="nama_cuti" type="text" id="nama_cuti" class="form-control" placeholder="Veriabel Cuti" value="<?php echo $row['nama_cuti']; ?>" autocomplete="off" required />
-                          <!--<span class="help-block">A block of help text that breaks onto a new line and may extend beyond one line.</span>-->
-                      </div>
-                  </div>
-                  <div class="form-group">
-                      <label class="col-sm-2 col-sm-2 control-label"></label>
-                      <div class="col-sm-10">
-                          <input type="submit" name="update" value="Simpan" class="btn btn-sm btn-primary" />&nbsp;
-                        <a href="index.php?page=jenis" class="btn btn-sm btn-danger">Batal </a>
-                      </div>
-                  </div>
-              </form>
-        </div><!-- /.box-body -->
-      </div><!-- /.box -->
+            <label class="col-sm-2 col-sm-2 control-label">Id Cuti</label>
+            <div class="col-sm-8">
+                <input name="id_cuti" type="text" id="id_cuti" class="form-control" placeholder="Tidak perlu di isi" value="<?php echo $row['id_cuti']; ?>" autofocus="on" readonly="readonly" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 col-sm-2 control-label">Variabel Cuti</label>
+            <div class="col-sm-8">
+                <input name="nama_cuti" type="text" id="nama_cuti" class="form-control" placeholder="Veriabel Cuti" value="<?php echo $row['nama_cuti']; ?>" autocomplete="off" required />
+                <!--<span class="help-block">A block of help text that breaks onto a new line and may extend beyond one line.</span>-->
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 col-sm-2 control-label">Sub</label>
+            <div class="col-sm-8">
+                <select name="sub" id="sub" class="form-control">
+                  <option value="0" <?=$row['nama_cuti']==0?'selected':''?> >Tidak</option>
+                  <option value="1" <?=$row['nama_cuti']==1?'selected':''?> >Iya</option>
+                </select>
+                <p class="help-block">Memiliki (N, N1, N2) </p>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 col-sm-2 control-label"></label>
+            <div class="col-sm-10">
+                <input type="submit" name="update" value="Simpan" class="btn btn-sm btn-primary" />&nbsp;
+              <a href="index.php?page=jenis" class="btn btn-sm btn-danger">Batal </a>
+            </div>
+        </div>
+    </form>
+  </div><!-- /.box-body -->
+</div><!-- /.box -->
 
     </section><!-- /.Left col -->
   </div><!-- /.row (main row) -->

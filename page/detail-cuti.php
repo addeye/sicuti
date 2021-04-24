@@ -66,11 +66,11 @@
               <td><?php echo $data['tanggal_awal']; ?></td>
               </tr>
               <tr>
-              <td>Tanggal Akhir/td>
+              <td>Tanggal Akhir</td>
               <td><?php echo $data['tanggal_akhir']; ?></td>
               </tr>
               <tr>
-              <td>Jumlah Cuti</td></td>
+              <td>Jumlah Cuti</td>
               <td><?php echo $data['jumlah']; ?></td>
               </tr>
               <tr>
@@ -137,6 +137,7 @@
               </tr>
               </table>
               <div class="text-right">
+              <a href="/generate-pdf.php?file=pdf-cuti&id=<?=$data['kode']?>" class="btn btn-sm btn-primary">Print PDF <i class="fa fa-print"></i></a>
               <a href="index.php?page=cuti" class="btn btn-sm btn-warning">Kembali <i class="fa fa-arrow-circle-right"></i></a>
         </div>
           </div>
